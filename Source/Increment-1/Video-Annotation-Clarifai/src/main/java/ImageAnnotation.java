@@ -33,6 +33,9 @@ public class ImageAnnotation {
         TreeMap tmap_score = new TreeMap(Collections.reverseOrder());
         TreeMap tmap_Label = new TreeMap();
         int labelCount=0;
+        System.out.println("***************************************************************");
+        System.out.println("********************** Video Summary **************************");
+        System.out.println("***************************************************************");
         for (int i=0; i<files.length;i++){
             //Getting the response from Clarifai API
             ClarifaiResponse response = client.getDefaultModels().generalModel().predict()
@@ -47,6 +50,10 @@ public class ImageAnnotation {
             //Get only response data with name and confidence score into List
             List<Concept> data = predictions.get(0).data();
 
+            System.out.println("*************" + files[i] + "***********");
+                        for (int j = 0; j < data.size(); j++) {
+                System.out.println(data.get(j).name() + " - " + data.get(j).value());
+            }
             /*To find top unique score in whole video
              *Treemap data structure eliminate duplicate and its faster to put Key value pair with constant time complexity*/
             for (int j = 0; j < data.size(); j++) {
@@ -65,9 +72,7 @@ public class ImageAnnotation {
             DisplayUtilities.displayName(image, "image" + i);
         }
 
-        System.out.println("***************************************************************");
-        System.out.println("********************** Video Summary **************************");
-        System.out.println("***************************************************************");
+
         System.out.println();
         System.out.println("Note: Image is annotated with top 10 Label in decreasing font size");
         System.out.println();
